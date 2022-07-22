@@ -68,10 +68,6 @@
   "hugo-bin": {
     "buildTags": "extended"
   },
-  "keywords": [
-    "bootstrap",
-    "icons"
-  ],
   "license": "MIT",
   "name": "bootstrap-icons",
   "repository": {
