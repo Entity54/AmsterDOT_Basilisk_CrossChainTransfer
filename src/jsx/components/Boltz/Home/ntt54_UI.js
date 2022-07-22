@@ -1,699 +1,1686 @@
-import React,{useState,useEffect} from 'react';
- 
-import aca100 from '../../../../icons/crypto/aca100.png';     
-import ksm100 from '../../../../icons/crypto/ksm100.png'; 
-import kar100 from '../../../../icons/crypto/kar100.png'; 
-import movr100 from '../../../../icons/crypto/movr100.png'; 
-import kint100 from '../../../../icons/crypto/kint100.png';  
-import pha100 from '../../../../icons/crypto/pha100.png';
-import ausd100 from '../../../../icons/crypto/ausd100.png';
-import kbtc100 from '../../../../icons/crypto/kbtc100.png';
-import { useMountedLayoutEffect } from 'react-table';
-import { useEffectOnce } from 'react-use';
- 
+import React, { useState, useEffect } from 'react'
 
+import aca100 from '../../../../icons/crypto/aca100.png'
+import ksm100 from '../../../../icons/crypto/ksm100.png'
+import kar100 from '../../../../icons/crypto/kar100.png'
+import movr100 from '../../../../icons/crypto/movr100.png'
+import kint100 from '../../../../icons/crypto/kint100.png'
+import pha100 from '../../../../icons/crypto/pha100.png'
+import ausd100 from '../../../../icons/crypto/ausd100.png'
+import kbtc100 from '../../../../icons/crypto/kbtc100.png'
+import { useMountedLayoutEffect } from 'react-table'
+import { useEffectOnce } from 'react-use'
 
-const QuickTrade = ({ 
-  resetTargetAccount, originChainSelected, destinationChainSelected, selectedTokenfunction, selectedDestinationChainfunction, selectedOriginChainfunction, 
-  resetState, balancesKSM, balancesKAR, balancesMOVR, balancesKINT, balancesPHA, balancesAUSD, balancesKBTC, selectedActionfunction,
+const QuickTrade = ({
+  resetTargetAccount,
+  originChainSelected,
+  destinationChainSelected,
+  selectedTokenfunction,
+  selectedDestinationChainfunction,
+  selectedOriginChainfunction,
+  resetState,
+  balancesKSM,
+  balancesKAR,
+  balancesMOVR,
+  balancesKINT,
+  balancesPHA,
+  balancesAUSD,
+  balancesKBTC,
+  selectedActionfunction,
 }) => {
+  const [action, setAction] = useState('XCMtransfer')
+  const [instructionStatus, setInstructionStatus] = useState('Step1')
 
-  const [action, setAction] = useState("XCMtransfer");    
-  const [instructionStatus, setInstructionStatus] = useState("Step1");    
+  const [stateOfMatrix, setStateOfMatrix] = useState('auto')
+  const [stateOfKSM, setStateOfKSM] = useState('auto')
+  const [stateOfKAR, setStateOfKAR] = useState('auto')
+  const [stateOfMOVR, setStateOfMOVR] = useState('auto')
+  const [stateOfKINT, setStateOfKINT] = useState('auto')
+  const [stateOfPHA, setStateOfPHA] = useState('auto')
+  const [stateOfAUSD, setStateOfAUSD] = useState('auto')
+  const [stateOfKBTC, setStateOfKBTC] = useState('auto')
 
-  const [stateOfMatrix, setStateOfMatrix] = useState("auto");     
-  const [stateOfKSM , setStateOfKSM]  = useState("auto");     
-  const [stateOfKAR , setStateOfKAR]  = useState("auto");     
-  const [stateOfMOVR, setStateOfMOVR] = useState("auto");     
-  const [stateOfKINT, setStateOfKINT] = useState("auto");     
-  const [stateOfPHA , setStateOfPHA]  = useState("auto");    
-  const [stateOfAUSD, setStateOfAUSD] = useState("auto");     
-  const [stateOfKBTC, setStateOfKBTC] = useState("auto");     
+  const [rowKSM, setRowKSM] = useState({ opacity: 1, clickable: '' })
+  const [rowKAR, setRowKAR] = useState({ opacity: 1, clickable: '' })
+  const [rowMOVR, setRowMOVR] = useState({ opacity: 1, clickable: '' })
+  const [rowKINT, setRowKINT] = useState({ opacity: 1, clickable: '' })
+  const [rowPHA, setRowPHA] = useState({ opacity: 1, clickable: '' })
+  const [rowAUSD, setRowAUSD] = useState({ opacity: 1, clickable: '' })
+  const [rowKBTC, setRowKBTC] = useState({ opacity: 1, clickable: '' })
 
-	const [rowKSM, setRowKSM] = useState({opacity: 1, clickable: "" })
-	const [rowKAR, setRowKAR] = useState({opacity: 1, clickable: "" })
-	const [rowMOVR, setRowMOVR] = useState({opacity: 1, clickable: "" })
-	const [rowKINT, setRowKINT] = useState({opacity: 1, clickable: "" })
-	const [rowPHA, setRowPHA] = useState({opacity: 1, clickable: "" })
-	const [rowAUSD, setRowAUSD] = useState({opacity: 1, clickable: "" })
-	const [rowKBTC, setRowKBTC] = useState({opacity: 1, clickable: "" })
-	
-  const colorOriginChain      =  "#FF5F1F";
-  const colorDestinationChain =  "#FF5F1F";
-
+  const colorOriginChain = '#FF5F1F'
+  const colorDestinationChain = '#FF5F1F'
 
   //#region Element Properties
-  const [elemKSM, setElemKSM] = useState(
-    [
-      { activebackgroundColor: "#3a3f49", backgroundColorDefault: "#3a3f49", opacity: 1,},
-      { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: "" },
-      { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-    ]
-  )
+  const [elemKSM, setElemKSM] = useState([
+    {
+      activebackgroundColor: '#3a3f49',
+      backgroundColorDefault: '#3a3f49',
+      opacity: 1,
+    },
+    {
+      activebackgroundColor: '#890000',
+      backgroundColorDefault: '#890000',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#0E86D4',
+      backgroundColorDefault: '#0E86D4',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#394d6d',
+      backgroundColorDefault: '#394d6d',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#8fcb02',
+      backgroundColorDefault: '#8fcb02',
+      opacity: 1,
+      clickable: '',
+    },
+  ])
 
-  const [elemKAR, setElemKAR] = useState(
-    [
-      { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1,   clickable: ""},
-      { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-    ]
-  )
+  const [elemKAR, setElemKAR] = useState([
+    {
+      activebackgroundColor: '#890000',
+      backgroundColorDefault: '#890000',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#0E86D4',
+      backgroundColorDefault: '#0E86D4',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#394d6d',
+      backgroundColorDefault: '#394d6d',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#8fcb02',
+      backgroundColorDefault: '#8fcb02',
+      opacity: 1,
+      clickable: '',
+    },
+  ])
 
-  const [elemMOVR, setElemMOVR] = useState(
-    [
-      { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-    ]
-  )
+  const [elemMOVR, setElemMOVR] = useState([
+    {
+      activebackgroundColor: '#890000',
+      backgroundColorDefault: '#890000',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#0E86D4',
+      backgroundColorDefault: '#0E86D4',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#394d6d',
+      backgroundColorDefault: '#394d6d',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#8fcb02',
+      backgroundColorDefault: '#8fcb02',
+      opacity: 1,
+      clickable: '',
+    },
+  ])
 
-  const [elemKINT, setElemKINT] = useState(
-    [
-      { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-    ]
-  )
+  const [elemKINT, setElemKINT] = useState([
+    {
+      activebackgroundColor: '#890000',
+      backgroundColorDefault: '#890000',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#0E86D4',
+      backgroundColorDefault: '#0E86D4',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#394d6d',
+      backgroundColorDefault: '#394d6d',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#8fcb02',
+      backgroundColorDefault: '#8fcb02',
+      opacity: 1,
+      clickable: '',
+    },
+  ])
 
-  const [elemPHA, setElemPHA] = useState(
-    [
-      { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-    ]
-  )
+  const [elemPHA, setElemPHA] = useState([
+    {
+      activebackgroundColor: '#890000',
+      backgroundColorDefault: '#890000',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#0E86D4',
+      backgroundColorDefault: '#0E86D4',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#394d6d',
+      backgroundColorDefault: '#394d6d',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#8fcb02',
+      backgroundColorDefault: '#8fcb02',
+      opacity: 1,
+      clickable: '',
+    },
+  ])
 
-  const [elemAUSD, setElemAUSD] = useState(
-    [
-      { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-    ]
-  )
+  const [elemAUSD, setElemAUSD] = useState([
+    {
+      activebackgroundColor: '#890000',
+      backgroundColorDefault: '#890000',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#0E86D4',
+      backgroundColorDefault: '#0E86D4',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#394d6d',
+      backgroundColorDefault: '#394d6d',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#8fcb02',
+      backgroundColorDefault: '#8fcb02',
+      opacity: 1,
+      clickable: '',
+    },
+  ])
 
-  const [elemKBTC, setElemKBTC] = useState(
-    [
-      { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-      { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-    ]
-  )
+  const [elemKBTC, setElemKBTC] = useState([
+    {
+      activebackgroundColor: '#890000',
+      backgroundColorDefault: '#890000',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#0E86D4',
+      backgroundColorDefault: '#0E86D4',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#394d6d',
+      backgroundColorDefault: '#394d6d',
+      opacity: 1,
+      clickable: '',
+    },
+    {
+      activebackgroundColor: '#8fcb02',
+      backgroundColorDefault: '#8fcb02',
+      opacity: 1,
+      clickable: '',
+    },
+  ])
   //#endregion
-
 
   //#region
   const actionModuleClicked = (choice) => {
     console.log(`User has chosen: ${choice}`)
-    setAction(choice);
-    selectedActionfunction(choice);  //Informs XCM Transfer Center
+    setAction(choice)
+    selectedActionfunction(choice) //Informs XCM Transfer Center
 
-    setStateOfKSM("auto"); 
-    setStateOfKAR("auto");  
-    setStateOfMOVR("auto");  
-    setStateOfKINT("auto");  
-    setStateOfPHA("auto");  
-    setStateOfAUSD("auto"); 
-    setStateOfKBTC("auto");
-    setInstructionStatus("Step1");
+    setStateOfKSM('auto')
+    setStateOfKAR('auto')
+    setStateOfMOVR('auto')
+    setStateOfKINT('auto')
+    setStateOfPHA('auto')
+    setStateOfAUSD('auto')
+    setStateOfKBTC('auto')
+    setInstructionStatus('Step1')
 
-    setStateOfMatrix("auto");
+    setStateOfMatrix('auto')
   }
   //#endregion
-
 
   //#region KSM_chainTabClicked
   const KSM_chainTabClicked = (choice) => {
-    console.log(`chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`)
-    setStateOfKAR("none");  setStateOfMOVR("none");  setStateOfKINT("none");  setStateOfPHA("none");  setStateOfAUSD("none"); setStateOfKBTC("none");
+    console.log(
+      `chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`,
+    )
+    setStateOfKAR('none')
+    setStateOfMOVR('none')
+    setStateOfKINT('none')
+    setStateOfPHA('none')
+    setStateOfAUSD('none')
+    setStateOfKBTC('none')
 
-    if (originChainSelected==="Origin Chain") 
-    {
-      selectedOriginChainfunction(choice);
+    if (originChainSelected === 'Origin Chain') {
+      selectedOriginChainfunction(choice)
       switch (choice) {
-          case "Kusama":
-            setElemKSM((result) => [ { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#3a3f49", opacity: 1,}, result[1], result[2], result[3], result[4] ] );
-            break;
-          case "Karura":
-            setElemKSM((result) => [ result[0], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#890000", opacity: 1,}, result[2], result[3], result[4] ] );
-            break;
-          case "Moonriver":
-            setElemKSM((result) => [ result[0], result[1], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 1,},  result[3], result[4] ] );
-            break;
-          case "Kintsugi":
-            setElemKSM((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[4] ] );
-            break;
-          case "Phala":
-            setElemKSM((result) => [ result[0],  { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 0, clickable: "none"},  { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 0, clickable: "none" }, { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 0, clickable: "none"}, { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-            break;
+        case 'Kusama':
+          setElemKSM((result) => [
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#3a3f49',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+            result[4],
+          ])
+          break
+        case 'Karura':
+          setElemKSM((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+            result[4],
+          ])
+          break
+        case 'Moonriver':
+          setElemKSM((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[3],
+            result[4],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKSM((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[4],
+          ])
+          break
+        case 'Phala':
+          setElemKSM((result) => [
+            result[0],
+            {
+              activebackgroundColor: '#890000',
+              backgroundColorDefault: '#890000',
+              opacity: 0,
+              clickable: 'none',
+            },
+            {
+              activebackgroundColor: '#0E86D4',
+              backgroundColorDefault: '#0E86D4',
+              opacity: 0,
+              clickable: 'none',
+            },
+            {
+              activebackgroundColor: '#394d6d',
+              backgroundColorDefault: '#394d6d',
+              opacity: 0,
+              clickable: 'none',
+            },
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
       }
 
-      if (action==="XCMtransfer") setInstructionStatus("Step3");
-
-    }
-    else if (destinationChainSelected==="Target Chain") 
-    {
-      selectedDestinationChainfunction(choice);
+      if (action === 'XCMtransfer') setInstructionStatus('Step3')
+    } else if (destinationChainSelected === 'Target Chain') {
+      selectedDestinationChainfunction(choice)
       switch (choice) {
-        case "Kusama":
-          setElemKSM((result) => [ { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#3a3f49", opacity: 1,}, result[1], result[2], result[3], result[4] ] );
-          break;
-        case "Karura":
-          setElemKSM((result) => [ result[0], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#890000", opacity: 1,}, result[2], result[3], result[4] ] );
-          break;
-        case "Moonriver":
-          setElemKSM((result) => [ result[0], result[1], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#0E86D4", opacity: 1,},  result[3], result[4] ] );
-          break;
-        case "Kintsugi":
-          setElemKSM((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[4] ] );
-          break;
-        case "Phala":
-          setElemKSM((result) => [ result[0], result[1], result[2], result[3], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
+        case 'Kusama':
+          setElemKSM((result) => [
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#3a3f49',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+            result[4],
+          ])
+          break
+        case 'Karura':
+          setElemKSM((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+            result[4],
+          ])
+          break
+        case 'Moonriver':
+          setElemKSM((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[3],
+            result[4],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKSM((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[4],
+          ])
+          break
+        case 'Phala':
+          setElemKSM((result) => [
+            result[0],
+            result[1],
+            result[2],
+            result[3],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
       }
-    }
-    else tokenClicked();
-
+    } else tokenClicked()
   }
   //#endregion
 
-
-
   //#region
   const KAR_chainTabClicked = (choice) => {
-    console.log(`chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`)
-    setStateOfKSM("none");  setStateOfMOVR("none");  setStateOfKINT("none");  setStateOfPHA("none");  setStateOfAUSD("none"); setStateOfKBTC("none");
+    console.log(
+      `chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`,
+    )
+    setStateOfKSM('none')
+    setStateOfMOVR('none')
+    setStateOfKINT('none')
+    setStateOfPHA('none')
+    setStateOfAUSD('none')
+    setStateOfKBTC('none')
 
-    if (originChainSelected==="Origin Chain") 
-    {
-      setInstructionStatus("Step3");
+    if (originChainSelected === 'Origin Chain') {
+      setInstructionStatus('Step3')
 
-      selectedOriginChainfunction(choice);
+      selectedOriginChainfunction(choice)
       switch (choice) {
-          case "Karura":
-            setElemKAR((result) => [ { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-            break;
-          case "Moonriver":
-            setElemKAR((result) => [ result[0], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-            break;
-          case "Kintsugi":
-            setElemKAR((result) => [ result[0], result[1], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-            break;
-          case "Phala":
-            setElemKAR((result) => [ result[0], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 0, clickable: "none" }, result[2], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-            break;
+        case 'Karura':
+          setElemKAR((result) => [
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemKAR((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKAR((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemKAR((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 0,
+              clickable: 'none',
+            },
+            result[2],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
       }
-    }
-    else if (destinationChainSelected==="Target Chain") 
-    {
-      selectedDestinationChainfunction(choice);
+    } else if (destinationChainSelected === 'Target Chain') {
+      selectedDestinationChainfunction(choice)
       switch (choice) {
-        case "Karura":
-          setElemKAR((result) => [ { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-          break;
-        case "Moonriver":
-          setElemKAR((result) => [ result[0], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-          break;
-        case "Kintsugi":
-          setElemKAR((result) => [ result[0], result[1], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-          break;
-        case "Phala":
-          setElemKAR((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
+        case 'Karura':
+          setElemKAR((result) => [
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemKAR((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKAR((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemKAR((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
       }
-    }
-    else tokenClicked();
-
+    } else tokenClicked()
   }
   //#endregion
 
   //#region
   const MOVR_chainTabClicked = (choice) => {
-    console.log(`chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`)
-    setStateOfKAR("none");  setStateOfKSM("none");  setStateOfKINT("none");  setStateOfPHA("none");  setStateOfAUSD("none"); setStateOfKBTC("none");
+    console.log(
+      `chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`,
+    )
+    setStateOfKAR('none')
+    setStateOfKSM('none')
+    setStateOfKINT('none')
+    setStateOfPHA('none')
+    setStateOfAUSD('none')
+    setStateOfKBTC('none')
 
-    if (originChainSelected==="Origin Chain") 
-    {
-      setInstructionStatus("Step3");
+    if (originChainSelected === 'Origin Chain') {
+      setInstructionStatus('Step3')
 
-      selectedOriginChainfunction(choice);
+      selectedOriginChainfunction(choice)
       switch (choice) {
-        case "Karura":
-          setElemMOVR((result) => [ { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 0, clickable: "none"} ] );
-          break;
-        case "Moonriver":
-          setElemMOVR((result) => [ result[0], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-          break;
-        case "Kintsugi":
-          setElemMOVR((result) => [ result[0], result[1], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-          break;
-        case "Phala":
-          setElemMOVR((result) => [ { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 0, clickable: "none"}, result[1], result[2], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
-    }
-  }
-  else if (destinationChainSelected==="Target Chain") 
-  {
-    selectedDestinationChainfunction(choice);
-    switch (choice) {
-      case "Karura":
-        setElemMOVR((result) => [ { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-        break;
-      case "Moonriver":
-        setElemMOVR((result) => [ result[0], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-        break;
-      case "Kintsugi":
-        setElemMOVR((result) => [ result[0], result[1], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-        break;
-      case "Phala":
-        setElemMOVR((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-        break;
-    }
-  }
-    else tokenClicked();
-
+        case 'Karura':
+          setElemMOVR((result) => [
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: '#8fcb02',
+              backgroundColorDefault: '#8fcb02',
+              opacity: 0,
+              clickable: 'none',
+            },
+          ])
+          break
+        case 'Moonriver':
+          setElemMOVR((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemMOVR((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemMOVR((result) => [
+            {
+              activebackgroundColor: '#890000',
+              backgroundColorDefault: '#890000',
+              opacity: 0,
+              clickable: 'none',
+            },
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else if (destinationChainSelected === 'Target Chain') {
+      selectedDestinationChainfunction(choice)
+      switch (choice) {
+        case 'Karura':
+          setElemMOVR((result) => [
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemMOVR((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemMOVR((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemMOVR((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else tokenClicked()
   }
   //#endregion
 
   //#region
   const KINT_chainTabClicked = (choice) => {
-    console.log(`chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`)
-    setStateOfKAR("none");  setStateOfMOVR("none");  setStateOfKSM("none");  setStateOfPHA("none");  setStateOfAUSD("none"); setStateOfKBTC("none");
+    console.log(
+      `chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`,
+    )
+    setStateOfKAR('none')
+    setStateOfMOVR('none')
+    setStateOfKSM('none')
+    setStateOfPHA('none')
+    setStateOfAUSD('none')
+    setStateOfKBTC('none')
 
-    if (originChainSelected==="Origin Chain") 
-    {
-      setInstructionStatus("Step3");
+    if (originChainSelected === 'Origin Chain') {
+      setInstructionStatus('Step3')
 
-      selectedOriginChainfunction(choice);
+      selectedOriginChainfunction(choice)
       switch (choice) {
-        case "Karura":
-          setElemKINT((result) => [ { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-          break;
-        case "Moonriver":
-          setElemKINT((result) => [ result[0], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-          break;
-        case "Kintsugi":
-          setElemKINT((result) => [ result[0], result[1], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-          break;
-        case "Phala":
-          setElemKINT((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
+        case 'Karura':
+          setElemKINT((result) => [
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemKINT((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKINT((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemKINT((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
       }
-    }
-    else if (destinationChainSelected==="Target Chain") 
-    {
-      selectedDestinationChainfunction(choice);
+    } else if (destinationChainSelected === 'Target Chain') {
+      selectedDestinationChainfunction(choice)
       switch (choice) {
-        case "Karura":
-          setElemKINT((result) => [ { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-          break;
-        case "Moonriver":
-          setElemKINT((result) => [ result[0], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-          break;
-        case "Kintsugi":
-          setElemKINT((result) => [ result[0], result[1], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-          break;
-        case "Phala":
-          setElemKINT((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
+        case 'Karura':
+          setElemKINT((result) => [
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemKINT((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKINT((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemKINT((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
       }
-    }
-    else tokenClicked();
-
+    } else tokenClicked()
   }
   //#endregion
 
   //#region
   const PHA_chainTabClicked = (choice) => {
-    console.log(`chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`)
-    setStateOfKAR("none");  setStateOfMOVR("none");  setStateOfKINT("none");  setStateOfKSM("none");  setStateOfAUSD("none"); setStateOfKBTC("none");
+    console.log(
+      `chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`,
+    )
+    setStateOfKAR('none')
+    setStateOfMOVR('none')
+    setStateOfKINT('none')
+    setStateOfKSM('none')
+    setStateOfAUSD('none')
+    setStateOfKBTC('none')
 
-    if (originChainSelected==="Origin Chain") 
-    {
-      setInstructionStatus("Step3");
+    if (originChainSelected === 'Origin Chain') {
+      setInstructionStatus('Step3')
 
-      selectedOriginChainfunction(choice);
+      selectedOriginChainfunction(choice)
       switch (choice) {
-        case "Karura":
-          setElemPHA((result) => [ { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-          break;
-        case "Moonriver":
-          setElemPHA((result) => [ result[0], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-          break;
-        case "Kintsugi":
-          setElemPHA((result) => [ result[0], result[1], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-          break;
-        case "Phala":
-          setElemPHA((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
-    }
-  }
-  else if (destinationChainSelected==="Target Chain") 
-  {
-    selectedDestinationChainfunction(choice);
-    switch (choice) {
-      case "Karura":
-        setElemPHA((result) => [ { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-        break;
-      case "Moonriver":
-        setElemPHA((result) => [ result[0], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-        break;
-      case "Kintsugi":
-        setElemPHA((result) => [ result[0], result[1], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-        break;
-      case "Phala":
-        setElemPHA((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-        break;
-    }
-  }
-    else tokenClicked();
-
+        case 'Karura':
+          setElemPHA((result) => [
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemPHA((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemPHA((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemPHA((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else if (destinationChainSelected === 'Target Chain') {
+      selectedDestinationChainfunction(choice)
+      switch (choice) {
+        case 'Karura':
+          setElemPHA((result) => [
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemPHA((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemPHA((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemPHA((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else tokenClicked()
   }
   //#endregion
 
   //#region
   const AUSD_chainTabClicked = (choice) => {
-    console.log(`chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`)
-    setStateOfKAR("none");  setStateOfMOVR("none");  setStateOfKINT("none");  setStateOfPHA("none");  setStateOfKSM("none"); setStateOfKBTC("none");
+    console.log(
+      `chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`,
+    )
+    setStateOfKAR('none')
+    setStateOfMOVR('none')
+    setStateOfKINT('none')
+    setStateOfPHA('none')
+    setStateOfKSM('none')
+    setStateOfKBTC('none')
 
-    if (originChainSelected==="Origin Chain") 
-    {
-      setInstructionStatus("Step3");
+    if (originChainSelected === 'Origin Chain') {
+      setInstructionStatus('Step3')
 
-      selectedOriginChainfunction(choice);
+      selectedOriginChainfunction(choice)
       switch (choice) {
-        case "Karura":
-          setElemAUSD((result) => [ { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-          break;
-        case "Moonriver":
-          setElemAUSD((result) => [ result[0], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-          break;
-        case "Kintsugi":
-          setElemAUSD((result) => [ result[0], result[1], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-          break;
-        case "Phala":
-          setElemAUSD((result) => [ result[0], { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 0, clickable: "none"}, result[2], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
-    }
-  }
-  else if (destinationChainSelected==="Target Chain") 
-  {
-    selectedDestinationChainfunction(choice);
-    switch (choice) {
-      case "Karura":
-        setElemAUSD((result) => [ { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-        break;
-      case "Moonriver":
-        setElemAUSD((result) => [ result[0], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-        break;
-      case "Kintsugi":
-        setElemAUSD((result) => [ result[0], result[1], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-        break;
-      case "Phala":
-        setElemAUSD((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-        break;
-    }
-  }
-    else tokenClicked();
-
+        case 'Karura':
+          setElemAUSD((result) => [
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemAUSD((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemAUSD((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemAUSD((result) => [
+            result[0],
+            {
+              activebackgroundColor: '#0E86D4',
+              backgroundColorDefault: '#0E86D4',
+              opacity: 0,
+              clickable: 'none',
+            },
+            result[2],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else if (destinationChainSelected === 'Target Chain') {
+      selectedDestinationChainfunction(choice)
+      switch (choice) {
+        case 'Karura':
+          setElemAUSD((result) => [
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemAUSD((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemAUSD((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemAUSD((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else tokenClicked()
   }
   //#endregion
 
   //#region
   const KBTC_chainTabClicked = (choice) => {
-    console.log(`chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`)
-    setStateOfKAR("none");  setStateOfMOVR("none");  setStateOfKINT("none");  setStateOfPHA("none");  setStateOfAUSD("none"); setStateOfKSM("none");
+    console.log(
+      `chainTabClicked originChainSelected:${originChainSelected} destinationChainSelected:${destinationChainSelected} choice:${choice}`,
+    )
+    setStateOfKAR('none')
+    setStateOfMOVR('none')
+    setStateOfKINT('none')
+    setStateOfPHA('none')
+    setStateOfAUSD('none')
+    setStateOfKSM('none')
 
-    if (originChainSelected==="Origin Chain") 
-    {
-      setInstructionStatus("Step3");
+    if (originChainSelected === 'Origin Chain') {
+      setInstructionStatus('Step3')
 
-      selectedOriginChainfunction(choice);
+      selectedOriginChainfunction(choice)
       switch (choice) {
-        case "Karura":
-          setElemKBTC((result) => [ { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-          break;
-        case "Moonriver":
-          setElemKBTC((result) => [ { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 0, clickable: "none"}, { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-          break;
-        case "Kintsugi":
-          setElemKBTC((result) => [ result[0], result[1], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-          break;
-        case "Phala":
-          setElemKBTC((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorOriginChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-          break;
-    }
-  }
-  else if (destinationChainSelected==="Target Chain") 
-  {
-    selectedDestinationChainfunction(choice);
-    switch (choice) {
-      case "Karura":
-        setElemKBTC((result) => [ { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#890000", opacity: 1,}, result[1], result[2], result[3] ] );
-        break;
-      case "Moonriver":
-        setElemKBTC((result) => [ result[0], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#0E86D4", opacity: 1,}, result[2], result[3] ] );
-        break;
-      case "Kintsugi":
-        setElemKBTC((result) => [ result[0], result[1], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#394d6d", opacity: 1,},  result[3] ] );
-        break;
-      case "Phala":
-        setElemKBTC((result) => [ result[0], result[1], result[2], { activebackgroundColor: colorDestinationChain, backgroundColorDefault: "#8fcb02", opacity: 1,} ] );
-        break;
-    }
-  }
-    else tokenClicked();
-
+        case 'Karura':
+          setElemKBTC((result) => [
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemKBTC((result) => [
+            {
+              activebackgroundColor: '#890000',
+              backgroundColorDefault: '#890000',
+              opacity: 0,
+              clickable: 'none',
+            },
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKBTC((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemKBTC((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorOriginChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else if (destinationChainSelected === 'Target Chain') {
+      selectedDestinationChainfunction(choice)
+      switch (choice) {
+        case 'Karura':
+          setElemKBTC((result) => [
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#890000',
+              opacity: 1,
+            },
+            result[1],
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Moonriver':
+          setElemKBTC((result) => [
+            result[0],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#0E86D4',
+              opacity: 1,
+            },
+            result[2],
+            result[3],
+          ])
+          break
+        case 'Kintsugi':
+          setElemKBTC((result) => [
+            result[0],
+            result[1],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#394d6d',
+              opacity: 1,
+            },
+            result[3],
+          ])
+          break
+        case 'Phala':
+          setElemKBTC((result) => [
+            result[0],
+            result[1],
+            result[2],
+            {
+              activebackgroundColor: colorDestinationChain,
+              backgroundColorDefault: '#8fcb02',
+              opacity: 1,
+            },
+          ])
+          break
+      }
+    } else tokenClicked()
   }
   //#endregion
 
+  const tokenClicked = (assetClicked) => {
+    setInstructionStatus('Step2')
 
-	const tokenClicked = (assetClicked) => {
-    setInstructionStatus("Step2");
+    console.log(`Asset ${assetClicked} was clicked`)
+    if (assetClicked === 'KSM') {
+      setRowKAR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowMOVR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKINT({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowPHA({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowAUSD({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKBTC({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('KSM')
+      setRowKSM({
+        opacity: 1,
+        clickable: '',
+        backgroundColor: colorOriginChain,
+      })
+      resetTargetAccount('KSM')
+    } else if (assetClicked === 'KAR') {
+      setRowKSM({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowMOVR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKINT({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowPHA({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowAUSD({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKBTC({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('KAR')
+      setRowKAR({
+        opacity: 1,
+        clickable: '',
+        backgroundColor: colorOriginChain,
+      })
+      resetTargetAccount('KAR')
+    } else if (assetClicked === 'MOVR') {
+      setRowKSM({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKAR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKINT({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowPHA({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowAUSD({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKBTC({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('MOVR')
+      setRowMOVR({
+        opacity: 1,
+        clickable: '',
+        backgroundColor: colorOriginChain,
+      })
+      resetTargetAccount('MOVR')
+    } else if (assetClicked === 'KINT') {
+      setRowKSM({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKAR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowMOVR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowPHA({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowAUSD({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKBTC({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('KINT')
+      setRowKINT({
+        opacity: 1,
+        clickable: '',
+        backgroundColor: colorOriginChain,
+      })
+      resetTargetAccount('KINT')
+    } else if (assetClicked === 'PHA') {
+      setRowKSM({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKAR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowMOVR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKINT({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowAUSD({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKBTC({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('PHA')
+      setRowPHA({
+        opacity: 1,
+        clickable: '',
+        backgroundColor: colorOriginChain,
+      })
+      resetTargetAccount('PHA')
+    } else if (assetClicked === 'AUSD') {
+      setRowKSM({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKAR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowMOVR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKINT({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowPHA({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKBTC({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('AUSD')
+      setRowAUSD({
+        opacity: 1,
+        clickable: '',
+        backgroundColor: colorOriginChain,
+      })
+      resetTargetAccount('AUSD')
+    } else if (assetClicked === 'KBTC') {
+      setRowKSM({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKAR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowMOVR({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowKINT({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowPHA({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      setRowAUSD({ opacity: 0, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('KBTC')
+      setRowKBTC({
+        opacity: 1,
+        clickable: '',
+        backgroundColor: colorOriginChain,
+      })
+      resetTargetAccount('KBTC')
+    } else {
+      setRowKSM({ opacity: 1, clickable: 'none', backgroundColor: 'black' })
+      setRowKAR({ opacity: 1, clickable: 'none', backgroundColor: 'black' })
+      setRowMOVR({ opacity: 1, clickable: 'none', backgroundColor: 'black' })
+      setRowKINT({ opacity: 1, clickable: 'none', backgroundColor: 'black' })
+      setRowPHA({ opacity: 1, clickable: 'none', backgroundColor: 'black' })
+      setRowAUSD({ opacity: 1, clickable: 'none', backgroundColor: 'black' })
+      setRowKBTC({ opacity: 1, clickable: 'none', backgroundColor: 'black' })
+      selectedTokenfunction('Token')
+      selectedOriginChainfunction('Origin Chain')
+      selectedDestinationChainfunction('Target Chain')
 
-		console.log(`Asset ${assetClicked} was clicked`);
-		if (assetClicked==="KSM")
-		{
-			setRowKAR({opacity: 0, clickable: "none", backgroundColor:"black" }); setRowMOVR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKINT({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowPHA({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowAUSD({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKBTC({opacity: 0, clickable: "none", backgroundColor:"black"  });
-			selectedTokenfunction("KSM");
-			setRowKSM({opacity: 1, clickable: "" , backgroundColor: colorOriginChain})
-      resetTargetAccount("KSM");
-		}
-		else if (assetClicked==="KAR")
-		{
-			setRowKSM({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowMOVR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKINT({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowPHA({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowAUSD({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKBTC({opacity: 0, clickable: "none", backgroundColor:"black"  });
-			selectedTokenfunction("KAR");
-			setRowKAR({opacity: 1, clickable: "" , backgroundColor: colorOriginChain})
-      resetTargetAccount("KAR");
-		}
-		else if (assetClicked==="MOVR")
-		{
-			setRowKSM({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKAR({opacity: 0, clickable: "none" , backgroundColor:"black" }); setRowKINT({opacity: 0, clickable: "none" , backgroundColor:"black" }); setRowPHA({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowAUSD({opacity: 0, clickable: "none" , backgroundColor:"black" }); setRowKBTC({opacity: 0, clickable: "none" , backgroundColor:"black" });
-			selectedTokenfunction("MOVR");
-			setRowMOVR({opacity: 1, clickable: "" , backgroundColor: colorOriginChain})
-      resetTargetAccount("MOVR");
-		}
-		else if (assetClicked==="KINT")
-		{
-			setRowKSM({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKAR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowMOVR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowPHA({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowAUSD({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKBTC({opacity: 0, clickable: "none" , backgroundColor:"black" });
-			selectedTokenfunction("KINT");
-			setRowKINT({opacity: 1, clickable: "" , backgroundColor: colorOriginChain})
-      resetTargetAccount("KINT");
-		}
-		else if (assetClicked==="PHA")
-		{
-			setRowKSM({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKAR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowMOVR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKINT({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowAUSD({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKBTC({opacity: 0, clickable: "none" , backgroundColor:"black" });
-			selectedTokenfunction("PHA");
-			setRowPHA({opacity: 1, clickable: "" , backgroundColor: colorOriginChain})
-      resetTargetAccount("PHA");
-		}
-		else if (assetClicked==="AUSD")
-		{
-			setRowKSM({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKAR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowMOVR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKINT({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowPHA({opacity: 0, clickable: "none" , backgroundColor:"black" }); setRowKBTC({opacity: 0, clickable: "none" , backgroundColor:"black" });
-			selectedTokenfunction("AUSD");
-			setRowAUSD({opacity: 1, clickable: "" , backgroundColor: colorOriginChain})
-      resetTargetAccount("AUSD");
-		}
-		else if (assetClicked==="KBTC")
-		{
-			setRowKSM({opacity: 0, clickable: "none" , backgroundColor:"black" }); setRowKAR({opacity: 0, clickable: "none" , backgroundColor:"black" }); setRowMOVR({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowKINT({opacity: 0, clickable: "none", backgroundColor:"black"  }); setRowPHA({opacity: 0, clickable: "none" , backgroundColor:"black" }); setRowAUSD({opacity: 0, clickable: "none", backgroundColor:"black"  });
-			selectedTokenfunction("KBTC");
-			setRowKBTC({opacity: 1, clickable: "" , backgroundColor: colorOriginChain})
-      resetTargetAccount("KBTC");
-		}
-		else 
-		{
-			setRowKSM({opacity: 1, clickable: "none", backgroundColor:"black"  }); setRowKAR({opacity: 1, clickable: "none", backgroundColor:"black"  }); setRowMOVR({opacity: 1, clickable: "none", backgroundColor:"black" }); setRowKINT({opacity: 1, clickable: "none", backgroundColor:"black"  }); setRowPHA({opacity: 1, clickable: "none", backgroundColor:"black"  }); setRowAUSD({opacity: 1, clickable: "none", backgroundColor:"black"  }); setRowKBTC({opacity: 1, clickable: "none" , backgroundColor:"black" });
-			selectedTokenfunction("Token");
-      selectedOriginChainfunction("Origin Chain");
-      selectedDestinationChainfunction("Target Chain");
+      resetTargetAccount('')
 
-      resetTargetAccount("");
+      setElemKSM([
+        {
+          activebackgroundColor: '#3a3f49',
+          backgroundColorDefault: '#3a3f49',
+          opacity: 1,
+        },
+        {
+          activebackgroundColor: '#890000',
+          backgroundColorDefault: '#890000',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#0E86D4',
+          backgroundColorDefault: '#0E86D4',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#394d6d',
+          backgroundColorDefault: '#394d6d',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#8fcb02',
+          backgroundColorDefault: '#8fcb02',
+          opacity: 1,
+          clickable: '',
+        },
+      ])
+      setElemKAR([
+        {
+          activebackgroundColor: '#890000',
+          backgroundColorDefault: '#890000',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#0E86D4',
+          backgroundColorDefault: '#0E86D4',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#394d6d',
+          backgroundColorDefault: '#394d6d',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#8fcb02',
+          backgroundColorDefault: '#8fcb02',
+          opacity: 1,
+          clickable: '',
+        },
+      ])
+      setElemMOVR([
+        {
+          activebackgroundColor: '#890000',
+          backgroundColorDefault: '#890000',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#0E86D4',
+          backgroundColorDefault: '#0E86D4',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#394d6d',
+          backgroundColorDefault: '#394d6d',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#8fcb02',
+          backgroundColorDefault: '#8fcb02',
+          opacity: 1,
+          clickable: '',
+        },
+      ])
+      setElemKINT([
+        {
+          activebackgroundColor: '#890000',
+          backgroundColorDefault: '#890000',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#0E86D4',
+          backgroundColorDefault: '#0E86D4',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#394d6d',
+          backgroundColorDefault: '#394d6d',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#8fcb02',
+          backgroundColorDefault: '#8fcb02',
+          opacity: 1,
+          clickable: '',
+        },
+      ])
+      setElemPHA([
+        {
+          activebackgroundColor: '#890000',
+          backgroundColorDefault: '#890000',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#0E86D4',
+          backgroundColorDefault: '#0E86D4',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#394d6d',
+          backgroundColorDefault: '#394d6d',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#8fcb02',
+          backgroundColorDefault: '#8fcb02',
+          opacity: 1,
+          clickable: '',
+        },
+      ])
+      setElemAUSD([
+        {
+          activebackgroundColor: '#890000',
+          backgroundColorDefault: '#890000',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#0E86D4',
+          backgroundColorDefault: '#0E86D4',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#394d6d',
+          backgroundColorDefault: '#394d6d',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#8fcb02',
+          backgroundColorDefault: '#8fcb02',
+          opacity: 1,
+          clickable: '',
+        },
+      ])
+      setElemKBTC([
+        {
+          activebackgroundColor: '#890000',
+          backgroundColorDefault: '#890000',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#0E86D4',
+          backgroundColorDefault: '#0E86D4',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#394d6d',
+          backgroundColorDefault: '#394d6d',
+          opacity: 1,
+          clickable: '',
+        },
+        {
+          activebackgroundColor: '#8fcb02',
+          backgroundColorDefault: '#8fcb02',
+          opacity: 1,
+          clickable: '',
+        },
+      ])
 
-      setElemKSM(
-        [
-          { activebackgroundColor: "#3a3f49", backgroundColorDefault: "#3a3f49", opacity: 1,},
-          { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-        ]
-      );
-      setElemKAR(
-        [
-          { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1,  clickable: ""},
-          { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-        ]
-      );
-      setElemMOVR(
-        [
-          { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-        ]
-      );
-      setElemKINT(
-        [
-          { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-        ]
-      );
-      setElemPHA(
-        [
-          { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-        ]
-      );
-      setElemAUSD(
-        [
-          { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-        ]
-      );
-      setElemKBTC(
-        [
-          { activebackgroundColor: "#890000", backgroundColorDefault: "#890000", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#0E86D4", backgroundColorDefault: "#0E86D4", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#394d6d", backgroundColorDefault: "#394d6d", opacity: 1, clickable: ""},
-          { activebackgroundColor: "#8fcb02", backgroundColorDefault: "#8fcb02", opacity: 1, clickable: ""},
-        ]
-      );
+      setStateOfMatrix('auto')
+      setAction('XCMTransfer')
+      setInstructionStatus('Step1')
+      setStateOfKSM('auto')
+      setStateOfKAR('auto')
+      setStateOfMOVR('auto')
+      setStateOfKINT('auto')
+      setStateOfPHA('auto')
+      setStateOfAUSD('auto')
+      setStateOfKBTC('auto')
+    }
+  }
 
-      setStateOfMatrix("auto");
-      setAction("XCMTransfer");
-      setInstructionStatus("Step1");
-      setStateOfKSM("auto"); setStateOfKAR("auto");  setStateOfMOVR("auto");  setStateOfKINT("auto");  setStateOfPHA("auto");  setStateOfAUSD("auto"); setStateOfKBTC("auto");
-		}
-
-	}
-
-	useEffect(() => {
-		tokenClicked("");
-	}, [resetState]);
+  useEffect(() => {
+    tokenClicked('')
+  }, [resetState])
 
   // useEffect(() => {
   //   if (action==="autostakeKSMtoKarura" && originChainSelected!=="Origin Chain") KSM_chainTabClicked("Karura");
-	// }, [originChainSelected, action]);
-  
-  useEffectOnce(() => {
-    actionModuleClicked("XCMtransfer")
-  }, []);
+  // }, [originChainSelected, action]);
 
-	return(
-		<>
-			<div>
-        <div className="card" style={{marginTop:"0px",paddingTop:"0px",backgroundColor:"",color:"#9E38FF"}}>
-          <div className=" d-block m-0 p-0"style={{marginTop:"0px",paddingTop:"0px",backgroundColor:""}}>
-            
+  useEffectOnce(() => {
+    actionModuleClicked('XCMtransfer')
+  }, [])
+
+  return (
+    <>
+      <div>
+        <div
+          className="card"
+          style={{
+            marginTop: '0px',
+            paddingTop: '0px',
+            backgroundColor: '',
+            color: '#9E38FF',
+          }}
+        >
+          <div
+            className=" d-block m-0 p-0"
+            style={{ marginTop: '0px', paddingTop: '0px', backgroundColor: '' }}
+          >
             <div>
-              { instructionStatus==="Step1"? (
-                  <h4 className="fs-30 text-center mt-2"><span style={{color:"white"}}>Step 1 - Select The <span style={{color:"yellow"}}>Asset</span> To Transfer</span></h4>
-                )
-                : instructionStatus==="Step2"? (
-                  <h4 className="fs-30 text-center mt-2"><span style={{color:"white"}}>Step 2 - Select The <span style={{color:"yellow"}}>Origin Chain</span> Balance To <span style={{color:"yellow"}}>Transfer From</span></span></h4>
-                )
-                :  instructionStatus==="Step3"? (
-                  <h4 className="fs-30 text-center mt-2"><span style={{color:"white"}}>Step 3 - Select The <span style={{color:"yellow"}}>Destination Chain</span> Balance To <span style={{color:"yellow"}}>Transfer To</span></span></h4>
-                )
+              {instructionStatus === 'Step1' ? (
+                <h4 className="fs-30 text-center mt-2">
+                  <span style={{ color: 'white' }}>
+                    Step 1 - Select The{' '}
+                    <span style={{ color: 'yellow' }}>Asset</span> To Transfer
+                  </span>
+                </h4>
+              ) : instructionStatus === 'Step2' ? (
+                <h4 className="fs-30 text-center mt-2">
+                  <span style={{ color: 'white' }}>
+                    Step 2 - Select The{' '}
+                    <span style={{ color: 'yellow' }}>Origin Chain</span>{' '}
+                    Balance To{' '}
+                    <span style={{ color: 'yellow' }}>Transfer From</span>
+                  </span>
+                </h4>
+              ) : instructionStatus === 'Step3' ? (
+                <h4 className="fs-30 text-center mt-2">
+                  <span style={{ color: 'white' }}>
+                    Step 3 - Select The{' '}
+                    <span style={{ color: 'yellow' }}>Destination Chain</span>{' '}
+                    Balance To{' '}
+                    <span style={{ color: 'yellow' }}>Transfer To</span>
+                  </span>
+                </h4>
+              ) : (
                 // :  instructionStatus==="KSMstaking"? (
                 //   <h4 className="fs-30 text-center mt-2"><span style={{color:"white"}}>Select The <span style={{color:"yellow"}}>Origin Chain KSM Balance </span> To Transfer And Stake</span></h4>
                 // )
                 // :  instructionStatus==="KSMunstaking"? (
                 //   <h4 className="fs-30 text-center mt-2"><span style={{color:"white"}}>Unstaking <span style={{color:"yellow"}}>KSM from LKSM </span>and depositing at Karura</span></h4>
                 // )
-                : <></>
-              }
-            </div> 
-
+                <></>
+              )}
+            </div>
           </div>
         </div>
-			</div>
+      </div>
 
-      <div style={{pointerEvents: `${stateOfMatrix}`}}>
-        <div className="card mb-0" style={{paddingRight:"",backgroundColor:"",color:"#9E38FF"}}>
-          <div className="card-body mt-0 p-0" style={{backgroundColor:"",marginLeft:"-50px", marginBottom:"-10px", marginTop:"-10px"}}>
-            <div className="basic-form"style={{backgroundColor:""}}>
+      <div style={{ pointerEvents: `${stateOfMatrix}` }}>
+        <div
+          className="card mb-0"
+          style={{ paddingRight: '', backgroundColor: '', color: '#9E38FF' }}
+        >
+          <div
+            className="card-body mt-0 p-0"
+            style={{
+              backgroundColor: '',
+              marginLeft: '-50px',
+              marginBottom: '-10px',
+              marginTop: '-10px',
+            }}
+          >
+            <div className="basic-form" style={{ backgroundColor: '' }}>
               <form className="form-wrapper mb-0">
                 <div className="form-group mb-0">
+                  {/* ------------------Parachain Title Row------------------- */}
 
-{/* ------------------Parachain Title Row------------------- */}
-
-                <div className="row" style={{ marginTop:"0px"}}>
-                  <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6 px-3" style={{height:"50px", padding:"2px", cursor:"pointer"}} onClick={() => tokenClicked("")}>
-                    <div className="row">
-                      <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" ></div>
-                      <div className="col-xl-10 col-xxl-4 col-lg-6 col-sm-6" style={{height:"75px"}}>
-                        <div className="widget-stat card" style={{backgroundColor: "black", borderWidth: "1px", borderColor: "#5685e6"}}>
-                          <div className="card-body  p-2" style={{ width:"100%"}}>
-                            <div className="media" style={{height:"35px"}}>
-                              <div className="media-body text-warning text-center">
-                              <h2 className="text-warning" ><span style={{color:"orange"}} onClick={() => tokenClicked("RESET")}>RESET</span></h2>
+                  <div className="row" style={{ marginTop: '0px' }}>
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6 px-3"
+                      onClick={() => tokenClicked('')}
+                    >
+                      <div className="row">
+                        <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"></div>
+                        <div
+                          className="col-xl-10 col-xxl-4 col-lg-6 col-sm-6"
+                          style={{ height: '75px' }}
+                        >
+                          <div
+                            className="widget-stat card"
+                            style={{
+                              backgroundColor: 'black',
+                              borderWidth: '1px',
+                              borderColor: '#5685e6',
+                            }}
+                          >
+                            <div
+                              className="card-body  p-2"
+                              style={{ width: '100%' }}
+                            >
+                              <div className="media" style={{ height: '35px' }}>
+                                <div className="media-body text-warning text-center">
+                                  <h2 className="text-warning">
+                                    <span
+                                      style={{ color: 'orange' }}
+                                      onClick={() => tokenClicked('RESET')}
+                                    >
+                                      RESET
+                                    </span>
+                                  </h2>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"50px", padding:"2px" }}>
-                    <div className="widget-stat card" style={{ height:"100%", backgroundColor: "#3a3f49", width:"100%", }}>
-                      <div className="card-body  p-2">
-                        <div className="media" style={{height:"40px"}}>
-                          <div className="media-body text-white text-center">
-                            <h4 className="text-white">KUSAMA</h4>
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{ height: '50px', padding: '2px' }}
+                    >
+                      <div
+                        className="widget-stat card"
+                        style={{
+                          height: '100%',
+                          backgroundColor: '#3a3f49',
+                          width: '100%',
+                        }}
+                      >
+                        <div className="card-body  p-2">
+                          <div className="media" style={{ height: '40px' }}>
+                            <div className="media-body text-white text-center">
+                              <h4 className="text-white">KUSAMA</h4>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"50px", padding:"2px" }}>
-                    <div className="widget-stat card" style={{ height:"100%", backgroundColor: "#890000", width:"100%", }}>
-                      <div className="card-body  p-2">
-                        <div className="media" style={{height:"40px"}}>
-                          <div className="media-body text-white text-center">
-                            <h4 className="text-white">KARURA</h4>
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{ height: '50px', padding: '2px' }}
+                    >
+                      <div
+                        className="widget-stat card"
+                        style={{
+                          height: '100%',
+                          backgroundColor: '#890000',
+                          width: '100%',
+                        }}
+                      >
+                        <div className="card-body  p-2">
+                          <div className="media" style={{ height: '40px' }}>
+                            <div className="media-body text-white text-center">
+                              <h4 className="text-white">KARURA</h4>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"50px", padding:"2px" }}>
+                    {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"50px", padding:"2px" }}>
                     <div className="widget-stat card" style={{ height:"100%", backgroundColor: "#0E86D4", width:"100%", }}>
                       <div className="card-body  p-2">
                         <div className="media" style={{height:"40px"}}>
@@ -715,7 +1702,7 @@ const QuickTrade = ({
                       </div>
                     </div>
                   </div> */}
-                  {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"50px", padding:"2px" }}>
+                    {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"50px", padding:"2px" }}>
                     <div className="widget-stat card" style={{ height:"100%", backgroundColor: "#8fcb02", width:"100%", }}>
                       <div className="card-body  p-2">
                         <div className="media" style={{height:"40px"}}>
@@ -726,54 +1713,133 @@ const QuickTrade = ({
                       </div>
                     </div>
                   </div> */}
-                </div>
+                  </div>
 
-{/* ------------------2nd ROW------------------- */}
+                  {/* ------------------2nd ROW------------------- */}
 
-                <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
-                  <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"70px", pointerEvents: `${stateOfKSM}`}} onClick={() => tokenClicked("KSM")}>
-                    <div className="row">
-                      <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" ></div>
-                      <div className="col-xl-10 col-xxl-4 col-lg-6 col-sm-6" style={{height:"100px"}}>
-                        <div className="widget-stat card" style={{backgroundColor:  `${rowKSM.backgroundColor}`, borderWidth: "1px", borderColor: "#5685e6"}}>
-                          <div className="card-body  p-2" style={{ width:"100%"}}>
-                            <div className="media" style={{height:"60px"}}>
-                              <div className="media-body text-white text-center">
-                                <h2 className="text-white" onClick={() => tokenClicked("KSM")}>KSM</h2>
+                  <div
+                    className="row"
+                    style={{ marginTop: '10px', cursor: 'pointer' }}
+                  >
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{ height: '70px', pointerEvents: `${stateOfKSM}` }}
+                      onClick={() => tokenClicked('KSM')}
+                    >
+                      <div className="row">
+                        <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"></div>
+                        <div
+                          className="col-xl-10 col-xxl-4 col-lg-6 col-sm-6"
+                          style={{ height: '100px' }}
+                        >
+                          <div
+                            className="widget-stat card"
+                            style={{
+                              backgroundColor: `${rowKSM.backgroundColor}`,
+                              borderWidth: '1px',
+                              borderColor: '#5685e6',
+                            }}
+                          >
+                            <div
+                              className="card-body  p-2"
+                              style={{ width: '100%' }}
+                            >
+                              <div className="media" style={{ height: '60px' }}>
+                                <div className="media-body text-white text-center">
+                                  <h2
+                                    className="text-white"
+                                    onClick={() => tokenClicked('KSM')}
+                                  >
+                                    KSM
+                                  </h2>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${rowKSM.clickable}`}}   onClick={() => KSM_chainTabClicked("Kusama")}>
-                    <div className="widget-stat card " style={{ height:"100%", backgroundColor: `${elemKSM[0].activebackgroundColor}`,  opacity: `${elemKSM[0].opacity}`, transition:"opacity 1s",   width:"100%", }}>
-                      <div className="card-body  p-2">
-                        <div className="media" style={{ height: "50px"}}>
-                          <img src={ksm100} style={{width: "50px", height: "50px"}}></img>
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{
+                        height: '70px',
+                        padding: '2px',
+                        opacity: `${rowKSM.opacity}`,
+                        transition: 'opacity 1s',
+                        pointerEvents: `${rowKSM.clickable}`,
+                      }}
+                      onClick={() => KSM_chainTabClicked('Kusama')}
+                    >
+                      <div
+                        className="widget-stat card "
+                        style={{
+                          height: '100%',
+                          backgroundColor: `${elemKSM[0].activebackgroundColor}`,
+                          opacity: `${elemKSM[0].opacity}`,
+                          transition: 'opacity 1s',
+                          width: '100%',
+                        }}
+                      >
+                        <div className="card-body  p-2">
+                          <div className="media" style={{ height: '50px' }}>
+                            <img
+                              src={ksm100}
+                              style={{ width: '50px', height: '50px' }}
+                            ></img>
                             <div className="media-body text-end me-3">
                               <p className="mb-0 text-white">Balance</p>
-                              <h4 className="mb-0 text-white"> {balancesKSM? balancesKSM.Kusama : ""}</h4>
+                              <h4 className="mb-0 text-white">
+                                {' '}
+                                {balancesKSM ? balancesKSM.Kusama : ''}
+                              </h4>
                             </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${(elemKSM[1].clickable==="none" || rowKSM.clickable==="none")?"none":""}` }}  onClick={() => KSM_chainTabClicked("Karura")}>
-                    <div className="widget-stat card " style={{ height:"100%",  backgroundColor: `${elemKSM[1].activebackgroundColor}`,  opacity: `${elemKSM[1].opacity}`, transition:"opacity 1s", width:"100%", }}>
-                      <div className="card-body  p-2">
-                        <div className="media" style={{height: "50px"}}>
-                          <img src={ksm100} style={{width: "50px", height: "50px"}}></img>
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{
+                        height: '70px',
+                        padding: '2px',
+                        opacity: `${rowKSM.opacity}`,
+                        transition: 'opacity 1s',
+                        pointerEvents: `${
+                          elemKSM[1].clickable === 'none' ||
+                          rowKSM.clickable === 'none'
+                            ? 'none'
+                            : ''
+                        }`,
+                      }}
+                      onClick={() => KSM_chainTabClicked('Karura')}
+                    >
+                      <div
+                        className="widget-stat card "
+                        style={{
+                          height: '100%',
+                          backgroundColor: `${elemKSM[1].activebackgroundColor}`,
+                          opacity: `${elemKSM[1].opacity}`,
+                          transition: 'opacity 1s',
+                          width: '100%',
+                        }}
+                      >
+                        <div className="card-body  p-2">
+                          <div className="media" style={{ height: '50px' }}>
+                            <img
+                              src={ksm100}
+                              style={{ width: '50px', height: '50px' }}
+                            ></img>
                             <div className="media-body text-end me-3">
                               <p className="mb-0 text-white">Balance</p>
-                              <h4 className="mb-0 text-white">{balancesKSM? balancesKSM.Karura : ""}</h4>
+                              <h4 className="mb-0 text-white">
+                                {balancesKSM ? balancesKSM.Karura : ''}
+                              </h4>
                             </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${(elemKSM[2].clickable==="none" || rowKSM.clickable==="none")?"none":""}` }}  onClick={() => KSM_chainTabClicked("Moonriver")}>
+                    {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${(elemKSM[2].clickable==="none" || rowKSM.clickable==="none")?"none":""}` }}  onClick={() => KSM_chainTabClicked("Moonriver")}>
                     <div className="widget-stat card " style={{ height:"100%", backgroundColor: `${elemKSM[2].activebackgroundColor}`,  opacity: `${elemKSM[2].opacity}`, transition:"opacity 1s", width:"100%",  }}>
                       <div className="card-body  p-2">
                         <div className="media" style={{height: "50px"}}>
@@ -786,7 +1852,7 @@ const QuickTrade = ({
                       </div>
                     </div>
                   </div> */}
-                  {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${(elemKSM[3].clickable==="none" || rowKSM.clickable==="none")?"none":""}` }}  onClick={() => KSM_chainTabClicked("Kintsugi")}>
+                    {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${(elemKSM[3].clickable==="none" || rowKSM.clickable==="none")?"none":""}` }}  onClick={() => KSM_chainTabClicked("Kintsugi")}>
                     <div className="widget-stat card " style={{ height:"100%",  backgroundColor: `${elemKSM[3].activebackgroundColor}`,  opacity: `${elemKSM[3].opacity}`, transition:"opacity 1s", width:"100%", }}>
                       <div className="card-body  p-2">
                         <div className="media" style={{height: "50px"}}>
@@ -799,7 +1865,7 @@ const QuickTrade = ({
                       </div>
                     </div>
                   </div> */}
-                  {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${(elemKSM[4].clickable==="none" || rowKSM.clickable==="none")?"none":""}` }}  onClick={() => KSM_chainTabClicked("Phala")}>
+                    {/* <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowKSM.opacity}`, transition:"opacity 1s", pointerEvents:`${(elemKSM[4].clickable==="none" || rowKSM.clickable==="none")?"none":""}` }}  onClick={() => KSM_chainTabClicked("Phala")}>
                     <div className="widget-stat card " style={{ height:"100%",  backgroundColor: `${elemKSM[4].activebackgroundColor}`,  opacity: `${elemKSM[4].opacity}`, transition:"opacity 1s", width:"100%", }}>
                       <div className="card-body  p-2">
                         <div className="media" style={{height: "50px"}}>
@@ -812,11 +1878,11 @@ const QuickTrade = ({
                       </div>
                     </div>
                   </div> */}
-                </div>
+                  </div>
 
-{/* ------------------3rd ROW------------------- */}
+                  {/* ------------------3rd ROW------------------- */}
 
-                {/* <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
+                  {/* <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
                   <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"70px", pointerEvents: `${stateOfKAR}`}} onClick={() => tokenClicked("KAR")}>
                     <div className="row">
                       <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" ></div>
@@ -886,9 +1952,9 @@ const QuickTrade = ({
                   </div>
                 </div> */}
 
-{/* ------------------4th ROW------------------- */}
+                  {/* ------------------4th ROW------------------- */}
 
-                {/* <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
+                  {/* <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
                   <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"70px", pointerEvents: `${stateOfMOVR}`}} onClick={() => tokenClicked("MOVR")}>
                     <div className="row">
                       <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" ></div>
@@ -955,11 +2021,9 @@ const QuickTrade = ({
                   </div>
                 </div> */}
 
+                  {/* ------------------5th ROW------------------- */}
 
-{/* ------------------5th ROW------------------- */}
-
-
-                 {/* <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
+                  {/* <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
                     <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"70px", pointerEvents: `${stateOfKINT}`}} onClick={() => tokenClicked("KINT")}>
                       <div className="row">
                         <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" ></div>
@@ -1026,7 +2090,7 @@ const QuickTrade = ({
                     </div>
                   </div> */}
 
-{/* ------------------6th ROW------------------- */}
+                  {/* ------------------6th ROW------------------- */}
 
                   {/* <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
                     <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"70px", pointerEvents: `${stateOfPHA}`}} onClick={() => tokenClicked("PHA")}>
@@ -1095,18 +2159,39 @@ const QuickTrade = ({
                     </div>
                   </div> */}
 
+                  {/* ------------------7th ROW------------------- */}
 
-{/* ------------------7th ROW------------------- */}
-
-
-                  <div className="row" style={{ marginTop:"10px", cursor:"pointer"}}>
-                    <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"70px", pointerEvents: `${stateOfAUSD}`}} onClick={() => tokenClicked("AUSD")}>
+                  <div
+                    className="row"
+                    style={{ marginTop: '10px', cursor: 'pointer' }}
+                  >
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{
+                        height: '70px',
+                        pointerEvents: `${stateOfAUSD}`,
+                      }}
+                      onClick={() => tokenClicked('AUSD')}
+                    >
                       <div className="row">
-                        <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" ></div>
-                        <div className="col-xl-10 col-xxl-4 col-lg-6 col-sm-6" style={{height:"100px"}}>
-                          <div className="widget-stat card" style={{backgroundColor: `${rowAUSD.backgroundColor}`, borderWidth: "1px", borderColor: "#5685e6"}}>
-                            <div className="card-body  p-2" style={{ width:"100%"}}>
-                              <div className="media" style={{height:"60px"}}>
+                        <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"></div>
+                        <div
+                          className="col-xl-10 col-xxl-4 col-lg-6 col-sm-6"
+                          style={{ height: '100px' }}
+                        >
+                          <div
+                            className="widget-stat card"
+                            style={{
+                              backgroundColor: `${rowAUSD.backgroundColor}`,
+                              borderWidth: '1px',
+                              borderColor: '#5685e6',
+                            }}
+                          >
+                            <div
+                              className="card-body  p-2"
+                              style={{ width: '100%' }}
+                            >
+                              <div className="media" style={{ height: '60px' }}>
                                 <div className="media-body text-white text-center">
                                   <h2 className="text-white">AUSD</h2>
                                 </div>
@@ -1116,16 +2201,49 @@ const QuickTrade = ({
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowAUSD.opacity}`, transition:"opacity 1s", pointerEvents:`${rowAUSD.clickable}` }}></div>
-                    <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{ height:"70px", padding:"2px", opacity:`${rowAUSD.opacity}`, transition:"opacity 1s", pointerEvents:`${rowAUSD.clickable}` }} onClick={() => AUSD_chainTabClicked("Karura")}>
-                      <div className="widget-stat card " style={{ height:"100%", backgroundColor:`${elemAUSD[0].activebackgroundColor}`,  opacity: `${elemAUSD[0].opacity}`, transition:"opacity 1s", width:"100%", }}>
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{
+                        height: '70px',
+                        padding: '2px',
+                        opacity: `${rowAUSD.opacity}`,
+                        transition: 'opacity 1s',
+                        pointerEvents: `${rowAUSD.clickable}`,
+                      }}
+                    ></div>
+                    <div
+                      className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6"
+                      style={{
+                        height: '70px',
+                        padding: '2px',
+                        opacity: `${rowAUSD.opacity}`,
+                        transition: 'opacity 1s',
+                        pointerEvents: `${rowAUSD.clickable}`,
+                      }}
+                      onClick={() => AUSD_chainTabClicked('Karura')}
+                    >
+                      <div
+                        className="widget-stat card "
+                        style={{
+                          height: '100%',
+                          backgroundColor: `${elemAUSD[0].activebackgroundColor}`,
+                          opacity: `${elemAUSD[0].opacity}`,
+                          transition: 'opacity 1s',
+                          width: '100%',
+                        }}
+                      >
                         <div className="card-body  p-2">
-                          <div className="media" style={{height: "50px"}}>
-                            <img src={ausd100} style={{width: "50px", height: "50px"}}></img>
-                              <div className="media-body text-end me-3">
-                                <p className="mb-0 text-white">Balance</p>
-                                <h4 className="mb-0 text-white">{balancesAUSD? balancesAUSD.Karura : ""}</h4>
-                              </div>
+                          <div className="media" style={{ height: '50px' }}>
+                            <img
+                              src={ausd100}
+                              style={{ width: '50px', height: '50px' }}
+                            ></img>
+                            <div className="media-body text-end me-3">
+                              <p className="mb-0 text-white">Balance</p>
+                              <h4 className="mb-0 text-white">
+                                {balancesAUSD ? balancesAUSD.Karura : ''}
+                              </h4>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1166,7 +2284,7 @@ const QuickTrade = ({
                     </div> */}
                   </div>
 
-{/* ------------------8th ROW------------------- */}
+                  {/* ------------------8th ROW------------------- */}
 
                   {/* <div className="row" style={{marginTop:"10px", cursor:"pointer"}}>
                     <div className="col-xl-2 col-xxl-4 col-lg-6 col-sm-6" style={{height:"70px", pointerEvents: `${stateOfKBTC}`}} onClick={() => tokenClicked("KBTC")}>
@@ -1239,8 +2357,8 @@ const QuickTrade = ({
             </div>
           </div>
         </div>
-			</div>
-		</>
-	)
+      </div>
+    </>
+  )
 }
-export default QuickTrade;
+export default QuickTrade

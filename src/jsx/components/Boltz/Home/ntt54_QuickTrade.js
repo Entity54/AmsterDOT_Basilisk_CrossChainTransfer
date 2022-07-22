@@ -607,10 +607,7 @@ const QuickTrade = ({
     <div className="form-group">
       <div className="input-group input-group-lg">
         <div className="input-group-prepend">
-          <div
-            className="input-group-text form-control default-select  "
-            style={{ fontSize: '22px', textAlign: 'center' }}
-          >
+          <div className="input-group-text form-control default-select  ">
             {tokenSelected}
           </div>
         </div>
@@ -621,7 +618,6 @@ const QuickTrade = ({
             value={inputTranferAmount}
             placeholder={'Number of tokens to send'}
             onChange={(event) => setInputTranferAmount(event.target.value)}
-            style={{ color: 'white', width: '450px' }}
           />
         </div>
       </div>
@@ -634,10 +630,7 @@ const QuickTrade = ({
     <div className="form-group">
       <div className="input-group input-group-lg">
         <div className="input-group-prepend">
-          <div
-            className="input-group-text form-control default-select  "
-            style={{ fontSize: '22px', textAlign: 'center' }}
-          >
+          <div className="input-group-text form-control default-select  ">
             {originChainSelected}
           </div>
         </div>
@@ -652,7 +645,6 @@ const QuickTrade = ({
               ? suggestedOriginAccount
               : polakdotAccountSigner.address
           }`}
-          style={{ color: 'white', fontSize: '22px' }}
         />
       </div>
     </div>
@@ -664,10 +656,7 @@ const QuickTrade = ({
     <div className="form-group">
       <div className="input-group input-group-lg">
         <div className="input-group-prepend">
-          <div
-            className="input-group-text form-control default-select  "
-            style={{ fontSize: '22px', textAlign: 'center' }}
-          >
+          <div className="input-group-text form-control default-select  ">
             {destinationChainSelected}
           </div>
         </div>
@@ -679,7 +668,6 @@ const QuickTrade = ({
           onChange={(event) => {
             setSendToAddress(event.target.value)
           }}
-          style={{ color: 'white' }}
         />
       </div>
     </div>
@@ -697,9 +685,7 @@ const QuickTrade = ({
       <div className="card">
         <div className="card-header d-block ">
           <div>
-            <h4 className="fs-36 text-black" style={{ textAlign: 'center' }}>
-              XCM Transfer Center
-            </h4>
+            <h4 className="fs-36 text-black">XCM Transfer Center</h4>
             <p>{loading ? 'loading' : 'loaded'}</p>
           </div>
         </div>
@@ -707,8 +693,8 @@ const QuickTrade = ({
           <div className="basic-form">
             <form className="form-wrapper">
               <div>{xcmTokenDiv}</div>
-              <div style={{ marginTop: '20px' }}>
-                <div className="row" style={{ marginBottom: '10px' }}>
+              <div>
+                <div className="row">
                   <div className="col-xl-9 col-xxl-12"></div>
                   <div className="col-xl-3 col-xxl-12"></div>
                 </div>
@@ -716,8 +702,8 @@ const QuickTrade = ({
                 {tokenDiv}
               </div>
 
-              <div style={{ marginTop: '20px' }}>
-                <div className="row" style={{ marginBottom: '10px' }}>
+              <div>
+                <div className="row">
                   <div className="col-xl-9 col-xxl-12"></div>
                   <div className="col-xl-3 col-xxl-12"></div>
                 </div>
@@ -725,12 +711,9 @@ const QuickTrade = ({
                 {stableDiv}
               </div>
 
-              <div className="row mt-4" style={{ backgroundColor: '' }}>
+              <div className="row mt-4">
                 <div className="col-xl-3"></div>
-                <div
-                  className="col-xl-6"
-                  style={{ marginTop: '20px', backgroundColor: '' }}
-                >
+                <div className="col-xl-6">
                   <button
                     type="button"
                     className="btn btn-outline-primary btn-lg btn-block"
@@ -753,10 +736,7 @@ const QuickTrade = ({
               <br />
               <br />
               <div className="col-xl-12 text-center text-warning">
-                <div
-                  className="fs-14 text-center mt-2"
-                  style={{ color: 'darkorange' }}
-                >
+                <div className="fs-14 text-center mt-2">
                   {transactionMessage}
                 </div>
               </div>

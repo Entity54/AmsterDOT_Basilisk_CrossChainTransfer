@@ -72,50 +72,22 @@ const Header = ({
     <div className="form-group">
       <div className="input-group input-group-lg">
         <div className="input-group-prepend">
-          <Dropdown
-            className="weather-btn mb-2"
-            style={{ backgroundColor: '#171622', marginTop: '20px' }}
-          >
+          <Dropdown className="weather-btn mb-2">
             <Dropdown.Toggle
               variant=""
               as="div"
               className="input-group-text form-control style-2 default-select cursor-pointer"
-              style={{
-                width: '650px',
-                fontSize: '12px',
-                color: dropdowncolor,
-                backgroundColor: '#171622',
-              }}
             >
-              <span
-                className="fs-22 font-w650 d-flex"
-                style={{ color: dropdowncolor, backgroundColor: '#171622' }}
-              >
+              <span className="fs-22 font-w650 d-flex">
                 <i className="fa fa-google-wallet">Polkadot</i>
               </span>
-              <span
-                className="fs-14 font-w650 d-flex"
-                style={{
-                  color: dropdowncolor,
-                  backgroundColor: '#171622',
-                  marginRight: '10px',
-                }}
-              >
+              <span>
                 {polkadotAccount
                   ? polkadotAccount
                   : 'Sign in to Polkadot Extension'}
               </span>
             </Dropdown.Toggle>
-            <Dropdown.Menu
-              style={{
-                height: '200px',
-                width: '650px',
-                overflowY: 'scroll',
-                fontSize: '14px',
-              }}
-            >
-              {polkadotAccountsDropDown}
-            </Dropdown.Menu>
+            <Dropdown.Menu>{polkadotAccountsDropDown}</Dropdown.Menu>
           </Dropdown>
         </div>
       </div>

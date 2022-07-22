@@ -39,13 +39,9 @@ const EventSidebar = ({ activeEvent }) => {
                 <li>Ticket Sold</li>
                 <li>561/650</li>
               </ul>
-              <div
-                className="progress mb-0"
-                style={{ height: 4, width: '100%' }}
-              >
+              <div className="progress mb-0">
                 <div
                   className="progress-bar bg-warning progress-animated"
-                  style={{ width: '85%', height: 8 }}
                   role="progressbar"
                 >
                   <span className="sr-only">60% Complete</span>
@@ -68,13 +64,9 @@ const EventSidebar = ({ activeEvent }) => {
                 <li>Ticket Sold</li>
                 <li>431/650</li>
               </ul>
-              <div
-                className="progress mb-0"
-                style={{ height: 4, width: '100%' }}
-              >
+              <div className="progress mb-0">
                 <div
                   className="progress-bar bg-warning progress-animated"
-                  style={{ width: '50%', height: 8 }}
                   role="progressbar"
                 >
                   <span className="sr-only">60% Complete</span>
@@ -97,13 +89,9 @@ const EventSidebar = ({ activeEvent }) => {
                 <li>Ticket Sold</li>
                 <li>650/650</li>
               </ul>
-              <div
-                className="progress mb-0"
-                style={{ height: 4, width: '100%' }}
-              >
+              <div className="progress mb-0">
                 <div
                   className="progress-bar bg-success progress-animated"
-                  style={{ width: '100%', height: 8 }}
                   role="progressbar"
                 >
                   <span className="sr-only">60% Complete</span>
