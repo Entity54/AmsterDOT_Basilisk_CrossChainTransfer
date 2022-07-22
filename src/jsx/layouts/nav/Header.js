@@ -72,14 +72,14 @@ const Header = ({
     <div className="form-group">
       <div className="input-group input-group-lg">
         <div className="input-group-prepend">
-          <Dropdown className="weather-btn mb-2">
+          <Dropdown className="wallet mb-2">
             <Dropdown.Toggle
               variant=""
               as="div"
               className="input-group-text form-control style-2 default-select cursor-pointer"
             >
               <span className="fs-22 font-w650 d-flex">
-                <i className="fa fa-google-wallet">Polkadot</i>
+                <i className="fa fa-google-wallet">Connected account:</i>
               </span>
               <span>
                 {polkadotAccount
@@ -87,7 +87,9 @@ const Header = ({
                   : 'Sign in to Polkadot Extension'}
               </span>
             </Dropdown.Toggle>
-            <Dropdown.Menu>{polkadotAccountsDropDown}</Dropdown.Menu>
+            <Dropdown.Menu className="account-dropdown">
+              {polkadotAccountsDropDown}
+            </Dropdown.Menu>
           </Dropdown>
         </div>
       </div>
@@ -118,7 +120,7 @@ const Header = ({
           <div className="collapse navbar-collapse justify-content-between">
             <div className="header-left">
               <li className="nav-item">
-                <div style={{ width: '30vw' }}></div>
+                <div></div>
               </li>
             </div>
 
